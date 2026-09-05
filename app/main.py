@@ -121,38 +121,28 @@ async def get_products():
         ]
     }
 
-# @app.get("/payment-test")
-# async def payment_test():
-#     payment_requests_total.inc()
-
-#     start_time = time.perf_counter()
-
-#     logger.info("Payment request received")
-
-#     db_active_connections.set(100)
-
-#     try:
-#         raise RuntimeError("Database connection pool exhausted")
-
-#     except Exception:
-#         payment_errors_total.inc()
-#         logger.exception("Payment processing failed")
-#         raise
-
-#     finally:
-#         duration = time.perf_counter() - start_time
-#         payment_request_duration_seconds.observe(duration)
 @app.get("/payment-test")
 async def payment_test():
     payment_requests_total.inc()
 
+    start_time = time.perf_counter()
+
     logger.info("Payment request received")
 
-    db_active_connections.set(20)
+    db_active_connections.set(100)
 
-    return {
-        "status": "payment processed successfully"
-    }
+    try:
+        raise RuntimeError("Database connection pool exhausted")
+
+    except Exception:
+        payment_errors_total.inc()
+        logger.exception("Payment processing failed")
+        raise
+
+    finally:
+        duration = time.perf_counter() - start_time
+        payment_request_duration_seconds.observe(duration)
+ 
 @app.get("/metrics")
 async def metrics():
 
