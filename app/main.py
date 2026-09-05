@@ -117,6 +117,7 @@ async def get_products():
         "products": [
             {"id": 1, "name": "Laptop", "price": 65000},
             {"id": 2, "name": "Headphones", "price": 3000},
+            {"id": 3, "name": "Keyboard", "price": 1500}
         ]
     }
 
